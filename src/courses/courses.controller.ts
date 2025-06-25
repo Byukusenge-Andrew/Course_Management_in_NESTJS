@@ -25,7 +25,7 @@ export class CoursesController {
   @Post()
   create(
     @Body() createCourseDto: CreateCourseDto,
-    @Request() req: ExpressRequest & { user: { userId: number } },
+    @Request() req: ExpressRequest & { user: { userId: string } },
   ) {
     return this.coursesService.create(createCourseDto, req.user.userId);
   }
@@ -37,18 +37,18 @@ export class CoursesController {
 
   @Get(":id")
   findOne(@Param("id") id: string) {
-    return this.coursesService.findOne(+id);
+    return this.coursesService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateCourseDto: UpdateCourseDto) {
-    return this.coursesService.update(+id, updateCourseDto);
+    return this.coursesService.update(id, updateCourseDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(":id")
   remove(@Param("id") id: string) {
-    return this.coursesService.remove(+id);
+    return this.coursesService.remove(id);
   }
 }

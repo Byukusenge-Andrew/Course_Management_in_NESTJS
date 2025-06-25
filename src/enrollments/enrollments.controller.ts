@@ -23,7 +23,7 @@ export class EnrollmentsController {
   @Post()
   create(
     @Body() createEnrollmentDto: CreateEnrollmentDto,
-    @Request() req: ExpressRequest & { user: { userId: number } },
+    @Request() req: ExpressRequest & { user: { userId: string } },
   ) {
     return this.enrollmentsService.create(createEnrollmentDto, req.user.userId);
   }
@@ -37,12 +37,12 @@ export class EnrollmentsController {
   @UseGuards(JwtAuthGuard)
   @Get(":id")
   findOne(@Param("id") id: string) {
-    return this.enrollmentsService.findOne(+id);
+    return this.enrollmentsService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(":id")
   remove(@Param("id") id: string) {
-    return this.enrollmentsService.remove(+id);
+    return this.enrollmentsService.remove(id);
   }
 }

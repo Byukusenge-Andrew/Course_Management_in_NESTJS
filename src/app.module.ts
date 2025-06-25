@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 // src/app.module.ts
 import { ConfigModule } from "@nestjs/config";
 import { Module } from "@nestjs/common";
@@ -10,6 +9,7 @@ import { EnrollmentsModule } from "./enrollments/enrollments.module";
 import { User } from "./entities/user.entity";
 import { Course } from "./entities/course.entity";
 import { Enrollment } from "./entities/enrollment.entity";
+import { UuidModule } from "nestjs-uuid";
 
 @Module({
   imports: [
@@ -26,6 +26,7 @@ import { Enrollment } from "./entities/enrollment.entity";
       autoLoadEntities: true, // Automatically load entities
     }),
     AuthModule,
+    UuidModule,
     UsersModule,
     CoursesModule,
     EnrollmentsModule,

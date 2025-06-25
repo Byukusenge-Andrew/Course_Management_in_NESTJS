@@ -2,12 +2,14 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Enrollment } from "./enrollment.entity";
 import { Course } from "./course.entity";
+
 // import {Enrollment} from './enrollment.entity';
+
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
 
   @Column()
   email!: string;

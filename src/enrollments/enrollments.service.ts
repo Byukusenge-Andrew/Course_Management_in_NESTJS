@@ -25,7 +25,7 @@ export class EnrollmentsService {
 
   async create(
     createEnrollmentDto: CreateEnrollmentDto,
-    userId: number,
+    userId: string,
   ): Promise<Enrollment> {
     const { courseId } = createEnrollmentDto;
     const user = await this.usersRepository.findOneBy({ id: userId });
@@ -56,7 +56,7 @@ export class EnrollmentsService {
     return this.enrollmentsRepository.find({ relations: ["user", "course"] });
   }
 
-  async findOne(id: number): Promise<Enrollment> {
+  async findOne(id: string): Promise<Enrollment> {
     const enrollment = await this.enrollmentsRepository.findOne({
       where: { id },
       relations: ["user", "course"],
@@ -67,7 +67,7 @@ export class EnrollmentsService {
     return enrollment;
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.enrollmentsRepository.delete(id);
   }
 }

@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import {
   Entity,
   Column,
@@ -12,8 +10,8 @@ import { Enrollment } from "./enrollment.entity";
 
 @Entity()
 export class Course {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
 
   @Column()
   title!: string;
