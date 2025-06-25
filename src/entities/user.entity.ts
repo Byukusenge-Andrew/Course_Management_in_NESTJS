@@ -1,36 +1,29 @@
 /* eslint-disable prettier/prettier */
-import { Entity,Column,PrimaryGeneratedColumn,OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Enrollment } from "./enrollment.entity";
 import { Course } from "./course.entity";
 // import {Enrollment} from './enrollment.entity';
 
-
 @Entity()
-export class User{
-    @PrimaryGeneratedColumn()
-    id!: number;
+export class User {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
+  @Column()
+  email!: string;
 
-    @Column()
-    email!: string;
+  @Column()
+  password!: string;
 
+  @Column()
+  name!: string;
 
-    @Column()
-    password!: string;
+  @Column({ default: "student" })
+  role!: string;
 
-
-    @Column()
-    name!: string;
-
-
-    @Column({ default: 'student' })
-    role!: string;
-
-     @OneToMany(() => Enrollment, (enrollment) => enrollment.user)
-    enrollments!: Enrollment[];
+  @OneToMany(() => Enrollment, (enrollment) => enrollment.user)
+  enrollments!: Enrollment[];
 
   @OneToMany(() => Course, (course) => course.instructor)
-    courses!: Course[];
-
-
+  courses!: Course[];
 }

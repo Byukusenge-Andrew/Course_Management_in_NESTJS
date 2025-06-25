@@ -1,20 +1,20 @@
 /* eslint-disable prettier/prettier */
 
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
-import { User } from './user.entity';
-import { Course } from './course.entity';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from "typeorm";
+import { User } from "./user.entity";
+import { Course } from "./course.entity";
 
 @Entity()
 export class Enrollment {
   @PrimaryGeneratedColumn()
-    id!: number;
+  id!: number;
 
   @ManyToOne(() => User, (user) => user.enrollments)
-    user!: User;
+  user!: User;
 
   @ManyToOne(() => Course, (course) => course.enrollments)
-    course!: Course;
+  course!: Course;
 
   @Column()
-    enrolledAt!: Date;
+  enrolledAt!: Date;
 }

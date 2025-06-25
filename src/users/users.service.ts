@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, ConflictException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import * as bcrypt from 'bcrypt';
+import { Injectable, ConflictException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { User } from "../entities/user.entity";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UsersService {
@@ -18,7 +18,7 @@ export class UsersService {
     const { email, password, name, role } = createUserDto;
     const existingUser = await this.usersRepository.findOneBy({ email });
     if (existingUser) {
-      throw new ConflictException('Email already exists');
+      throw new ConflictException("Email already exists");
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.usersRepository.create({
@@ -46,7 +46,7 @@ export class UsersService {
     await this.usersRepository.update(id, updateUserDto);
     const updatedUser = await this.findOne(id);
     if (!updatedUser) {
-      throw new Error('User not found after update');
+      throw new Error("User not found after update");
     }
     return updatedUser;
   }

@@ -1,12 +1,16 @@
 /* eslint-disable prettier/prettier */
 
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Enrollment } from '../entities/enrollment.entity';
-import { Course } from '../entities/course.entity';
-import { User } from '../entities/user.entity';
-import { CreateEnrollmentDto } from './dto/create-enrollment.dto';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Enrollment } from "../entities/enrollment.entity";
+import { Course } from "../entities/course.entity";
+import { User } from "../entities/user.entity";
+import { CreateEnrollmentDto } from "./dto/create-enrollment.dto";
 
 @Injectable()
 export class EnrollmentsService {
@@ -19,13 +23,16 @@ export class EnrollmentsService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async create(createEnrollmentDto: CreateEnrollmentDto, userId: number): Promise<Enrollment> {
+  async create(
+    createEnrollmentDto: CreateEnrollmentDto,
+    userId: number,
+  ): Promise<Enrollment> {
     const { courseId } = createEnrollmentDto;
     const user = await this.usersRepository.findOneBy({ id: userId });
     const course = await this.coursesRepository.findOneBy({ id: courseId });
-    
+
     if (!user || !course) {
-      throw new NotFoundException('User or Course not found');
+      throw new NotFoundException("User or Course not found");
     }
 
     const existingEnrollment = await this.enrollmentsRepository.findOne({
@@ -33,7 +40,7 @@ export class EnrollmentsService {
     });
 
     if (existingEnrollment) {
-      throw new ConflictException('User is already enrolled in this course');
+      throw new ConflictException("User is already enrolled in this course");
     }
 
     const enrollment = this.enrollmentsRepository.create({
@@ -46,16 +53,16 @@ export class EnrollmentsService {
   }
 
   findAll(): Promise<Enrollment[]> {
-    return this.enrollmentsRepository.find({ relations: ['user', 'course'] });
+    return this.enrollmentsRepository.find({ relations: ["user", "course"] });
   }
 
   async findOne(id: number): Promise<Enrollment> {
     const enrollment = await this.enrollmentsRepository.findOne({
       where: { id },
-      relations: ['user', 'course'],
+      relations: ["user", "course"],
     });
     if (!enrollment) {
-      throw new NotFoundException('Enrollment not found');
+      throw new NotFoundException("Enrollment not found");
     }
     return enrollment;
   }
