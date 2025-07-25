@@ -10,7 +10,6 @@ import { User } from "./entities/user.entity";
 import { Course } from "./entities/course.entity";
 import { Enrollment } from "./entities/enrollment.entity";
 import { UuidModule } from "nestjs-uuid";
-
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),

@@ -10,12 +10,19 @@ import {
   Delete,
   UseGuards,
   Request,
+  UseInterceptors,
+  UploadedFile,
+  HttpException,
+  HttpStatus,
 } from "@nestjs/common";
 import { CoursesService } from "./courses.service";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { UpdateCourseDto } from "./dto/update-course.dto";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
-import { Request as ExpressRequest } from "express";
+import { Request as ExpressRequest ,Express} from "express";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { extractCoursesfromExcelBuffer } from "src/utils/excel-reader";
+
 
 @Controller("courses")
 export class CoursesController {
@@ -38,6 +45,23 @@ export class CoursesController {
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.coursesService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("import")
+  @UseInterceptors(FileInterceptor("file"))
+  async importCourses(
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req: ExpressRequest & { user: { userId: string } },
+  ) {
+    if (!file || !file.buffer ) {
+      throw new HttpException("File is required", HttpStatus.BAD_REQUEST);
+    }
+    const courses = extractCoursesfromExcelBuffer(file.buffer);
+
+    for (const course of courses) {
+      await this.coursesService.create(course, req.user.userId);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
